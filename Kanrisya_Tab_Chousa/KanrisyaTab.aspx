@@ -46,13 +46,19 @@
             margin-left:34px;
         }
 
-        .rowHover{
+        .selectedRow{
+            box-sizing: border-box;
             background-color:#DFDFDF;
-            border-radius:20px;
+            border-radius:10px;
             height:24px;
-            border:1px #CBCBCB;
+            border:1px solid #CBCBCB;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+            padding-left:14px;
         }
-
+        .rbColor{
+            border-style:none;
+            border-color:transparent;
+        }
 /*table.RowHover tr:hover td {
     background: rgb(235, 235, 245) !important;
 }*/
@@ -66,11 +72,13 @@ $(function () {
         dropOnEmpty: false,
         start: function (e, ui) {
             ui.item.addClass("selected");
-            ui.item.addClass("rowHover");
+            ui.item.addClass("rbColor");
+            $(ui.item).find(".row_item").addClass("selectedRow");
         },
         stop: function (e, ui) {
             ui.item.removeClass("selected");
-            ui.item.removeClass("rowHover");
+            ui.item.removeClass("rbColor");
+            $(ui.item).find(".row_item").removeClass("selectedRow");
         },
         receive: function (e, ui) {
             $(this).find("tbody").append(ui.item);
@@ -98,25 +106,23 @@ $(function () {
                     <asp:Label ID="lbl_ques4" runat="server" Text="4. おおむね当てはまる"></asp:Label>
                     <asp:Label ID="lbl_ques5" runat="server" Text="5. 大いに当てはまる"></asp:Label>
                 </div>
-                 <div style="overflow-x: auto; width: 100% !important;">
+                 <div style="overflow-x: auto; width: 100% !important;padding-top:20px;">
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
-                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#CCCCCC" Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal"
-                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating">
-                                
-                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-                                <RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />
+                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"  Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal">
+                               <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                                <RowStyle Height="34px" Width="820px" />
+                                <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
                                 <Columns>
-                                    <asp:TemplateField HeaderText="仕入先コード"  Visible="False">
+                                    <asp:TemplateField Visible="False">
                                         <ItemTemplate>
-                                            <div class="grip" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
-                                                
+                                            <div id="div_code" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
                                                  <asp:Label runat="server" ID="lblcT" Text='<%# Bind("id") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <div class="grip" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
+                                            <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
                                                  <asp:Label runat="server" ID="lbl_name" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
                                             </div>
                                         </ItemTemplate>
@@ -125,40 +131,10 @@ $(function () {
                                         </EditItemTemplate>
                                         <ItemStyle Width="820px"/>
                                     </asp:TemplateField>
-                                    <%--<asp:TemplateField>
-                                        <ItemTemplate>
-                                              <asp:Button ID="btnEdit" runat="server" CommandName="Edit" Text="編集" CssClass="JC09GridGrayBtn" Width="50px" Height="28px" />
-                                        </ItemTemplate>
-                                        <EditItemTemplate>
-                                            <asp:Button ID="btnUpdate" runat="server" CommandName="Update" Text="更新" CssClass="JC09GridGrayBtn" Width="50px" Height="28px" />
-                                        </EditItemTemplate>
-                                    </asp:TemplateField>--%>
-
-                                    <%--<asp:CommandField ShowEditButton="True" />--%>
-
                                     </Columns>
                                 </asp:GridView>
-
-                                    <%-- Cell Edit Test --%>
-                                    <%--<asp:GridView ID="GridView1" HeaderStyle-BackColor="#3AC0F2" HeaderStyle-ForeColor="White"
-                                        runat="server" AutoGenerateColumns="false" OnRowDataBound="OnRowDataBound"
-                                        OnRowEditing="OnRowEditing" OnSelectedIndexChanged="index_changes">
-                                        <Columns>
-                                            <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-Width="150" />
-                                            <asp:BoundField DataField="Country" HeaderText="Country" ItemStyle-Width="150" />
-                                            <asp:TemplateField>
-                                            <EditItemTemplate>
-                                                <asp:LinkButton Text="Update" runat="server" OnClick = "OnUpdate" />
-                                                <asp:LinkButton Text="Cancel" runat="server" OnClick = "OnCancel" />
-                                            </EditItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                    </asp:GridView>--%>
-
-
                                     </div>
                      </div>
-                
            </div>
         </div>
     </div>
