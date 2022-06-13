@@ -9,9 +9,15 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <label>Hi</label>
-        </div>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AllowPaging="true"
+            PageSize="10">
+            <Columns>
+                <asp:BoundField  DataField="PersonType" HeaderText="Person Type" />
+                <asp:BoundField  DataField="FirstName" HeaderText="First Name" />
+                <asp:BoundField  DataField="LastName" HeaderText="Last Name" />
+               
+            </Columns>
+        </asp:GridView>
     </form>
 </body>
 </html>
