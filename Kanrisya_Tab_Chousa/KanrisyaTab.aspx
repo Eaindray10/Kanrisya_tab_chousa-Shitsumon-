@@ -59,9 +59,6 @@
             border-style:none;
             border-color:transparent;
         }
-/*table.RowHover tr:hover td {
-    background: rgb(235, 235, 245) !important;
-}*/
     </style>
     <script type="text/javascript">
 $(function () {
@@ -83,8 +80,9 @@ $(function () {
         receive: function (e, ui) {
             $(this).find("tbody").append(ui.item);
         }
-
     });
+
+
 });
 </script>
 </head>
@@ -108,7 +106,8 @@ $(function () {
                 </div>
                  <div style="overflow-x: auto; width: 100% !important;padding-top:20px;">
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
-                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"  Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal">
+                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"  Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal"
+                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit" OnRowDataBound="OnRowDataBound">
                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
                                 <RowStyle Height="34px" Width="820px" />
                                 <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
@@ -123,7 +122,10 @@ $(function () {
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
-                                                 <asp:Label runat="server" ID="lbl_name" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                
+                                                 <%--<asp:LinkButton ID="txt_name" runat="server" CommandArgument='<%# Eval("name","{0}") %>' Text='<%# Bind("name","{0}") %>' Font-Underline="false" CommandName="Edit" Font-Size="13px" style="display: none;"></asp:LinkButton>--%>
+                                                
+                                                <asp:Label runat="server" ID="lbl_name" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
                                             </div>
                                         </ItemTemplate>
                                         <EditItemTemplate>
@@ -131,6 +133,16 @@ $(function () {
                                         </EditItemTemplate>
                                         <ItemStyle Width="820px"/>
                                     </asp:TemplateField>
+                                    <asp:TemplateField>  
+                                        <ItemTemplate>  
+                                            <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />  
+                                        </ItemTemplate>  
+                                        <EditItemTemplate>  
+                                            <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update"/>  
+                                            <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel"/>  
+                                        </EditItemTemplate>  
+                                    </asp:TemplateField>  
+                                  
                                     </Columns>
                                 </asp:GridView>
                                     </div>
