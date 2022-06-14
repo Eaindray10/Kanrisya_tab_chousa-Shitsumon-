@@ -59,6 +59,12 @@
             border-style:none;
             border-color:transparent;
         }
+        .displayNone{
+            display:none;
+        }
+        .displayTxt{
+            display:block;
+        }
     </style>
     <script type="text/javascript">
 $(function () {
@@ -71,23 +77,48 @@ $(function () {
             ui.item.addClass("selected");
             ui.item.addClass("rbColor");
             $(ui.item).find(".row_item").addClass("selectedRow");
+            document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
         },
         stop: function (e, ui) {
             ui.item.removeClass("selected");
             ui.item.removeClass("rbColor");
             $(ui.item).find(".row_item").removeClass("selectedRow");
+             document.getElementById("<%=HF_afterSortIndex.ClientID%>").value = ui.item.index();
+            //alert(document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value + ',' + document.getElementById("<%=HF_afterSortIndex.ClientID%>").value);
+            document.getElementById("<%=BT_Sort.ClientID%>").click();
         },
         receive: function (e, ui) {
             $(this).find("tbody").append(ui.item);
         }
     });
+    $('#GV_ques tr').click(function () {
+         var row = $(this).closest("tr");
+         //Determine the Row Index.
+        var index = (row[0].rowIndex - 1);
+        //alert(index + " " + $("#GV_ques_txt_name_" + index).val() + "\n" + $("#GV_ques_lbl_name_" + index).val());
+        if ($("#GV_ques_txt_name_" + index).hasClass("displayNone")) {
+            $("#GV_ques_txt_name_" + index).removeClass("displayNone");
+            $("#GV_ques_txt_name_" + index).addClass("displayTxt");
+            $("#GV_ques_lbl_name_" + index).addClass("displayNone");
+            $("#GV_ques_lbl_name_" + index).removeClass("displayTxt");
+            $("#GV_ques_txt_name_" + index).focus();
+        }
 
-
-});
+        $("#GV_ques_txt_name_" + index).focusout(function () {
+        var text = $(this).val();
+           $("#GV_ques_txt_name_" + index).removeClass("displayTxt");
+            $("#GV_ques_txt_name_" + index).addClass("displayNone");
+            $("#GV_ques_lbl_name_" + index).removeClass("displayNone");
+            $("#GV_ques_lbl_name_" + index).addClass("displayTxt");
+             $("#GV_ques_lbl_name_" + index).html(text);
+        });
+    });
+ });
 </script>
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
     <div class="container">
         <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-left:72px;margin-top:97px;">
             <li class="nav-item">
@@ -106,10 +137,13 @@ $(function () {
                 </div>
                  <div style="overflow-x: auto; width: 100% !important;padding-top:20px;">
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
-                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"  Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal"
-                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit" OnRowDataBound="OnRowDataBound">
+                                <asp:UpdatePanel ID="updpnl" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
+                    <ContentTemplate>
+                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="1px" ForeColor="Black" GridLines="Horizontal"
+                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit">
                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
                                 <RowStyle Height="34px" Width="820px" />
+                                <HeaderStyle CssClass="displayNone" />
                                 <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
                                 <Columns>
                                     <asp:TemplateField Visible="False">
@@ -122,30 +156,20 @@ $(function () {
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
-                                                
-                                                 <%--<asp:LinkButton ID="txt_name" runat="server" CommandArgument='<%# Eval("name","{0}") %>' Text='<%# Bind("name","{0}") %>' Font-Underline="false" CommandName="Edit" Font-Size="13px" style="display: none;"></asp:LinkButton>--%>
-                                                
-                                                <asp:Label runat="server" ID="lbl_name" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname" onfocusout="makeITUpperCase(this)"></asp:TextBox>
                                             </div>
                                         </ItemTemplate>
-                                        <EditItemTemplate>
-                                            <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>'></asp:TextBox>
-                                        </EditItemTemplate>
                                         <ItemStyle Width="820px"/>
                                     </asp:TemplateField>
-                                    <asp:TemplateField>  
-                                        <ItemTemplate>  
-                                            <asp:Button ID="btn_Edit" runat="server" Text="Edit" CommandName="Edit" />  
-                                        </ItemTemplate>  
-                                        <EditItemTemplate>  
-                                            <asp:Button ID="btn_Update" runat="server" Text="Update" CommandName="Update"/>  
-                                            <asp:Button ID="btn_Cancel" runat="server" Text="Cancel" CommandName="Cancel"/>  
-                                        </EditItemTemplate>  
-                                    </asp:TemplateField>  
-                                  
                                     </Columns>
                                 </asp:GridView>
-                                    </div>
+                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                    <asp:HiddenField ID="HF_beforeSortIndex" runat="server" />
+                                    <asp:HiddenField ID="HF_afterSortIndex" runat="server" />
+                                    <asp:Button ID="BT_Sort" runat="server" Text="Button" OnClick="BT_Sort_Click" style="display:none;" />
+                             </div>
                      </div>
            </div>
         </div>

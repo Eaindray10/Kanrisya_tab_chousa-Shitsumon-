@@ -15,12 +15,12 @@ namespace Kanrisya_Tab_Chousa
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-          
-            if (!IsPostBack)
+
+            if (!this.IsPostBack)
             {
+                
                 showData();
                 GV_ques.HeaderRow.Cells[1].Visible = false;
-               
             }
         }
 
@@ -38,6 +38,50 @@ namespace Kanrisya_Tab_Chousa
             GV_ques.DataBind();
             con.Close();
         }
+
+        private DataTable CreateTableColomn()
+        {
+            DataTable dt_ques = new DataTable();
+            dt_ques.Columns.Add("id");
+            dt_ques.Columns.Add("name");
+            return dt_ques;
+        }
+        private DataTable GetGridViewData()
+        {
+            DataTable dt = new DataTable();
+            dt = CreateTableColomn();
+            foreach (GridViewRow row in GV_ques.Rows)
+            {
+                Label lbl_id = (row.FindControl("lblcT") as Label);
+                Label lbl_name = (row.FindControl("lbl_name") as Label);
+
+                DataRow dr = dt.NewRow();
+                dr[0] = lbl_id.Text;
+                dr[1] = lbl_name.Text;
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+        protected void BT_Sort_Click(object sender, EventArgs e)
+        {
+            DataTable dt = GetGridViewData();
+            
+                var dr_copy = dt.NewRow();
+                int before_index = Convert.ToInt32(HF_beforeSortIndex.Value) - 1;
+                int after_index = Convert.ToInt32(HF_afterSortIndex.Value) - 1;
+                DataRow dr = dt.Rows[before_index];
+                dr_copy.ItemArray = dr.ItemArray.Clone() as object[];
+                dt.Rows.RemoveAt(before_index);
+                dt.Rows.InsertAt(dr_copy, after_index);
+            
+            //DataTable dt_SyohinOriginal = GetGridViewData();
+            DataTable dt_SyohinOriginal = new DataTable();
+            dt_SyohinOriginal = dt;
+            GV_ques.DataSource = dt_SyohinOriginal;
+            GV_ques.DataBind();
+            updpnl.Update();
+        }
         protected void GV_ques_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
             //NewEditIndex property used to determine the index of the row being edited.  
@@ -47,7 +91,7 @@ namespace Kanrisya_Tab_Chousa
         protected void GV_ques_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
         {
             //Finding the controls from Gridview for the row which is going to update  
-            TextBox name = GV_ques.Rows[e.RowIndex].FindControl("txt_name") as TextBox;
+            //TextBox name = GV_ques.Rows[e.RowIndex].FindControl("txt_name") as TextBox;
             //MySqlConnection con = new MySqlConnection(constr);
             //con.Open();
             ////updating the record  

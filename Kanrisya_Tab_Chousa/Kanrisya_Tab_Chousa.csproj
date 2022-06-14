@@ -75,6 +75,7 @@
     <Content Include="Shitsumon.aspx" />
     <Content Include="Styles\bootstrap.min.css" />
     <Content Include="Web.config" />
+    <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="KanrisyaTab.aspx.cs">
@@ -91,6 +92,13 @@
     </Compile>
     <Compile Include="Shitsumon.aspx.designer.cs">
       <DependentUpon>Shitsumon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
