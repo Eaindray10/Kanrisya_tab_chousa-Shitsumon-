@@ -124,5 +124,12 @@ namespace Kanrisya_Tab_Chousa
                 e.Row.Attributes["style"] = "cursor:pointer";
             }
         }
+
+        protected void lnkbtnShiireEdit_Click(object sender, EventArgs e)
+        {
+            GridViewRow gvrow = (sender as LinkButton).NamingContainer as GridViewRow;
+            (gvrow.FindControl("txt_name") as TextBox).CssClass = "displayTxt";
+            (gvrow.FindControl("lbl_name") as TextBox).CssClass = "displayNone";
+        }
     }
 }

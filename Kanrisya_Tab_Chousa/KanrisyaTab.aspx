@@ -76,6 +76,20 @@
         .displayTxt {
             display: block;
         }
+        .btn-icons {
+    color: black;
+    font-size: 13px;
+    margin-left:5.5px;
+}
+        #PopupMenu1{
+            box-sizing: border-box;
+            /* ホワイト */
+
+            /*background: #FFFFFF;*/
+            border: 1px solid #F9F9F9;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+        }
     </style>
     <script type="text/javascript">
         $(function () {
@@ -130,7 +144,7 @@
                     document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
             var ind = (ui.item.index() - 1);
             var name = $("[id*=GV_ques] tr").find("#GV_ques_lbl_name_" + ind).html();
-            sessionStorage.setItem("r_name", name);
+                    sessionStorage.setItem("r_name", name);
         },
         stop: function (e, ui) {
             ui.item.removeClass("selected");
@@ -170,6 +184,9 @@
                     $("#GV_ques_lbl_name_" + index).html(text);
                     //setData(index, text);
                 });
+            });
+            $('#lnkbtnShiireEdit').click(function () {
+                alert("lnkbtnShiireEdit");
             });
         });
 </script>
@@ -222,15 +239,23 @@
                                                       </div>
                                                       </asp:Panel>
                                                 
-                                                <asp:Panel ID="PopupMenu1" runat="server" CssClass="modalPopup dropdown-menu fontcss " aria-labelledby="dropdownMenuButton" Style="display: none; min-width: 1rem; width: 6rem; margin-left: 5px;">
-                                                     <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
-                                                  <i class="bi bi-trash-fill"></i>
+                                                <asp:Panel ID="PopupMenu1" runat="server" Style="display:none;">
+                                                    <div id="div_btn" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
+                                                         <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
+                                                  <i class="bi bi-three-dots"></i>
                                                 </asp:LinkButton>
-                                                    <%--<asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>--%>
+                                                     <asp:Panel ID="pnl_popup" runat="server" Style="display: none;">
+                                                  <asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;" OnClick="lnkbtnShiireEdit_Click"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>
                                                 </asp:Panel>
-                                                <asp:HoverMenuExtender ID="hmeBumonListEdit" runat="server" TargetControlID="Panel2" 
-                                                PopupControlID="PopupMenu1" PopupPosition="Right">
+                                                    </div>
+                                                </asp:Panel>
+                                                 <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
+                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0">
+                                            </asp:HoverMenuExtender>
+                                                
+                                                    <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="PopupMenu1" 
+                                                PopupControlID="pnl_popup" PopupPosition="bottom">
                                             </asp:HoverMenuExtender>
                                             </div>
                                         </ItemTemplate>
