@@ -94,44 +94,6 @@
     <script type="text/javascript">
         $(function () {
 
-            //window.onload = function () {
-
-            //    // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
-            //    if (sessionStorage.getItem('name') == "name") {
-            //        return;
-            //    }
-
-            //    // If values are not blank, restore them to the fields
-            //    var id = sessionStorage.getItem('id');
-               
-            //    //if (name !== null) $('#inputName').val(name);
-
-            //    var name = sessionStorage.getItem('name');
-            //    //if (email !== null) $('#inputEmail').val(email);
-            //    //alert(id + "\n" + name);
-            //}
-
-            // Before refreshing the page, save the form data to sessionStorage
-            window.onbeforeunload = function () {
-                <%--$("#<%=GV_ques.ClientID%> tr").each(function () {
-                    var row = $(this).closest("tr");
-                    //Determine the Row Index.
-                    var index = (row[0].rowIndex - 1);
-                    sessionStorage.setItem("id", $("#GV_ques_lblcT_" + index).val());
-                    sessionStorage.setItem("name", $("#GV_ques_lbl_name_" + index).val());
-                });--%>
-
-            }
-
-            //var arr_index = [];
-            //var arr_name = [];
-
-            //function setData(index, name) {
-            //    arr_index.push(index);
-            //    arr_name.push(name);
-            //    sessionStorage("arr_index", arr_index);
-            //}
-
             $("[id*=GV_ques]").sortable({
                 items: 'tr:not(tr:first-child)',
                 cursor: 'pointer',
@@ -142,9 +104,9 @@
                     ui.item.addClass("rbColor");
                     $(ui.item).find(".row_item").addClass("selectedRow");
                     document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
-            var ind = (ui.item.index() - 1);
-            var name = $("[id*=GV_ques] tr").find("#GV_ques_lbl_name_" + ind).html();
-                    sessionStorage.setItem("r_name", name);
+                    //var ind = (ui.item.index() - 1);
+                    //var name = $("[id*=GV_ques] tr").find("#GV_ques_lbl_name_" + ind).html();
+                    //sessionStorage.setItem("r_name", name);
         },
         stop: function (e, ui) {
             ui.item.removeClass("selected");
@@ -165,8 +127,6 @@
                 var row = $(this).closest("tr");
                 //Determine the Row Index.
                 var index = (row[0].rowIndex - 1);
-
-                //alert(index + " " + $("#GV_ques_txt_name_" + index).val() + "\n" + $("#GV_ques_lbl_name_" + index).val());
                 if ($("#GV_ques_txt_name_" + index).hasClass("displayNone")) {
                     $("#GV_ques_txt_name_" + index).removeClass("displayNone");
                     $("#GV_ques_txt_name_" + index).addClass("displayTxt");
@@ -182,11 +142,7 @@
                     $("#GV_ques_lbl_name_" + index).removeClass("displayNone");
                     $("#GV_ques_lbl_name_" + index).addClass("displayTxt");
                     $("#GV_ques_lbl_name_" + index).html(text);
-                    //setData(index, text);
                 });
-            });
-            $('#lnkbtnShiireEdit').click(function () {
-                alert("lnkbtnShiireEdit");
             });
         });
 </script>
@@ -194,6 +150,7 @@
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
+       
     <div class="container">
         <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-left:72px;margin-top:97px;">
             <li class="nav-item">
@@ -214,6 +171,57 @@
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
                                 <asp:UpdatePanel ID="updpnl" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
                     <ContentTemplate>
+
+                        <asp:GridView ID="GV_ques_original" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
+                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit" Visible="false">
+                               <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                                <RowStyle Height="34px" Width="820px" BorderWidth="0.5px" />
+                                <HeaderStyle CssClass="displayNone" />
+                                <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
+                                <Columns>
+                                    <asp:TemplateField Visible="False">
+                                        <ItemTemplate>
+                                            <div id="div_code" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
+                                                 <asp:Label runat="server" ID="lblcT" Text='<%# Bind("id") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
+                                                 
+                                                  <asp:Panel ID="Panel2" runat="server" >
+                                                      <div>
+                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname"></asp:TextBox>
+                                                      </div>
+                                                      </asp:Panel>
+                                                
+                                                <asp:Panel ID="PopupMenu1" runat="server" Style="display:none;">
+                                                    <div id="div_btn" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
+                                                         <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
+                                                  <i class="bi bi-three-dots"></i>
+                                                </asp:LinkButton>
+                                                     <asp:Panel ID="pnl_popup" runat="server" Style="display: none;">
+                                                  <asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;" OnClick="lnkbtnShiireEdit_Click"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>
+                                                </asp:Panel>
+                                                    </div>
+                                                </asp:Panel>
+                                                 <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
+                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0">
+                                            </asp:HoverMenuExtender>
+                                                
+                                                    <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="PopupMenu1" 
+                                                PopupControlID="pnl_popup" PopupPosition="bottom">
+                                            </asp:HoverMenuExtender>
+                                            </div>
+                                        </ItemTemplate>
+                                        <ItemStyle Width="820px"/>
+                                    </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+
                             <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
                                 OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit">
                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
@@ -273,6 +281,7 @@
            </div>
         </div>
     </div>
+    
   </form>
 </body>
 </html>
