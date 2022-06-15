@@ -15,15 +15,29 @@ namespace Kanrisya_Tab_Chousa
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (!this.IsPostBack)
             {
-                
-                showData();
+                MySqlConnection con = new MySqlConnection(constr);
+                DataTable dt = new DataTable();
+              
+                    con.Open();
+                    string select_ques = "select id,name from m_ess;";
+                    MySqlCommand cmd = new MySqlCommand(select_ques, con);
+                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                   
+                    DataSet ds = new DataSet();
+                    adapter.Fill(dt);
+                GV_ques.DataSource = ViewState["Customers"] == null ? dt: ViewState["Customers"] as DataTable;
+                    GV_ques.DataBind();
+                    con.Close();
                 GV_ques.HeaderRow.Cells[1].Visible = false;
             }
         }
-
+        protected void BindGrid()
+        {
+            GV_ques.DataSource = (DataTable)ViewState["Customers"];
+            GV_ques.DataBind();
+        }
         protected void showData()
         {
             MySqlConnection con = new MySqlConnection(constr);
@@ -49,24 +63,33 @@ namespace Kanrisya_Tab_Chousa
         private DataTable GetGridViewData()
         {
             DataTable dt = new DataTable();
-            dt = CreateTableColomn();
-            foreach (GridViewRow row in GV_ques.Rows)
+            if (ViewState["Customers"] == null)
             {
-                Label lbl_id = (row.FindControl("lblcT") as Label);
-                Label lbl_name = (row.FindControl("lbl_name") as Label);
+                dt = CreateTableColomn();
+                foreach (GridViewRow row in GV_ques.Rows)
+                {
+                    Label lbl_id = (row.FindControl("lblcT") as Label);
+                    Label lbl_name = (row.FindControl("lbl_name") as Label);
 
-                DataRow dr = dt.NewRow();
-                dr[0] = lbl_id.Text;
-                dr[1] = lbl_name.Text;
-                dt.Rows.Add(dr);
+                    DataRow dr = dt.NewRow();
+                    dr[0] = lbl_id.Text;
+                    dr[1] = lbl_name.Text;
+                    dt.Rows.Add(dr);
+                }
             }
+            else
+            {
+                dt = ViewState["Customers"] as DataTable;
+            }
+                
             return dt;
         }
 
         protected void BT_Sort_Click(object sender, EventArgs e)
         {
             DataTable dt = GetGridViewData();
-            
+            if (ViewState["Customers"] != null)
+            {
                 var dr_copy = dt.NewRow();
                 int before_index = Convert.ToInt32(HF_beforeSortIndex.Value) - 1;
                 int after_index = Convert.ToInt32(HF_afterSortIndex.Value) - 1;
@@ -74,13 +97,15 @@ namespace Kanrisya_Tab_Chousa
                 dr_copy.ItemArray = dr.ItemArray.Clone() as object[];
                 dt.Rows.RemoveAt(before_index);
                 dt.Rows.InsertAt(dr_copy, after_index);
-            
-            //DataTable dt_SyohinOriginal = GetGridViewData();
-            DataTable dt_SyohinOriginal = new DataTable();
-            dt_SyohinOriginal = dt;
-            GV_ques.DataSource = dt_SyohinOriginal;
-            GV_ques.DataBind();
-            updpnl.Update();
+
+                //DataTable dt_SyohinOriginal = GetGridViewData();
+                DataTable dt_SyohinOriginal = new DataTable();
+                dt_SyohinOriginal = dt;
+                ViewState["Customers"] = dt_SyohinOriginal;
+                GV_ques.DataSource = dt_SyohinOriginal;
+                GV_ques.DataBind();
+                updpnl.Update();
+            }
         }
         protected void GV_ques_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
