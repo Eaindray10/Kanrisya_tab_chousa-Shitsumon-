@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KanrisyaTab.aspx.cs" Inherits="Kanrisya_Tab_Chousa.KanrisyaTab" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KanrisyaTab.aspx.cs" Inherits="Kanrisya_Tab_Chousa.KanrisyaTab"  EnableViewState="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <!DOCTYPE html>
@@ -281,7 +281,54 @@
            </div>
         </div>
     </div>
-    
+     <script type="text/javascript">
+                      var prm = Sys.WebForms.PageRequestManager.getInstance();
+            if (prm != null) {
+                prm.add_endRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null)
+                    {
+                        $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).focusout(function () {
+                    var text = $(this).val();
+                   
+                    $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).removeClass("displayTxt");
+                    $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).addClass("displayNone");
+                    $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).removeClass("displayNone");
+                    $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).addClass("displayTxt");
+                 $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).html(text);
+                 //__doPostBack();
+
+                        });
+
+                        $("[id*=GV_ques]").sortable({
+                items: 'tr:not(tr:first-child)',
+                cursor: 'pointer',
+                axis: 'y',
+                dropOnEmpty: false,
+                start: function (e, ui) {
+                    ui.item.addClass("selected");
+                    ui.item.addClass("rbColor");
+                    $(ui.item).find(".row_item").addClass("selectedRow");
+                    document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
+                  
+        },
+        stop: function (e, ui) {
+            ui.item.removeClass("selected");
+            ui.item.removeClass("rbColor");
+            $(ui.item).find(".row_item").removeClass("selectedRow");
+            document.getElementById("<%=HF_afterSortIndex.ClientID%>").value = ui.item.index();
+            sessionStorage.setItem("r_index", (ui.item.index() - 1));
+           
+            document.getElementById("<%=BT_Sort.ClientID%>").click();
+                },
+                receive: function (e, ui) {
+                    $(this).find("tbody").append(ui.item);
+                }
+            });
+
+                                        };
+                });
+                }
+                                    </script>
   </form>
 </body>
 </html>

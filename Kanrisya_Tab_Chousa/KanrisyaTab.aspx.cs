@@ -15,11 +15,11 @@ namespace Kanrisya_Tab_Chousa
         string constr = ConfigurationManager.ConnectionStrings["constr"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+            MySqlConnection con = new MySqlConnection(constr);
+            DataTable dt = new DataTable();
+            ViewState["Customers"] = null;
             if (!this.IsPostBack)
             {
-                MySqlConnection con = new MySqlConnection(constr);
-                DataTable dt = new DataTable();
-              
                     con.Open();
                     string select_ques = "select id,name from m_ess;";
                     MySqlCommand cmd = new MySqlCommand(select_ques, con);
@@ -31,6 +31,10 @@ namespace Kanrisya_Tab_Chousa
                     GV_ques.DataBind();
                     con.Close();
                 GV_ques.HeaderRow.Cells[1].Visible = false;
+            }
+            else
+            {
+                BT_Sort_Click(sender, e);
             }
         }
         protected void BindGrid()
@@ -69,7 +73,8 @@ namespace Kanrisya_Tab_Chousa
                 foreach (GridViewRow row in GV_ques.Rows)
                 {
                     Label lbl_id = (row.FindControl("lblcT") as Label);
-                    Label lbl_name = (row.FindControl("lbl_name") as Label);
+                    //Label lbl_name = (row.FindControl("lbl_name") as Label);
+                    TextBox lbl_name = (row.FindControl("txt_name") as TextBox);
 
                     DataRow dr = dt.NewRow();
                     dr[0] = lbl_id.Text;
@@ -105,6 +110,10 @@ namespace Kanrisya_Tab_Chousa
                 GV_ques.DataSource = dt_SyohinOriginal;
                 GV_ques.DataBind();
                 updpnl.Update();
+            }
+            else
+            {
+                ViewState["Customers"] = dt;
             }
         }
         protected void GV_ques_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
