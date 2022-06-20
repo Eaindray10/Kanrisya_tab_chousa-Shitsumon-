@@ -21,15 +21,15 @@ namespace Kanrisya_Tab_Chousa
             if (!this.IsPostBack)
             {
                     con.Open();
-                    string select_ques = "select id,name from m_ess;";
-                    MySqlCommand cmd = new MySqlCommand(select_ques, con);
-                    MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                   
-                    DataSet ds = new DataSet();
-                    adapter.Fill(dt);
+                    string select_ques = "select id,name,number from m_ess;"; //20220620
+                MySqlCommand cmd = new MySqlCommand(select_ques, con);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(dt);
                 GV_ques.DataSource = ViewState["Customers"] == null ? dt: ViewState["Customers"] as DataTable;
-                    GV_ques.DataBind();
-                    con.Close();
+                GV_ques.DataBind();
+                set_labelColor();
+                con.Close();
                 GV_ques.HeaderRow.Cells[1].Visible = false;
             }
             else
@@ -42,17 +42,38 @@ namespace Kanrisya_Tab_Chousa
             GV_ques.DataSource = (DataTable)ViewState["Customers"];
             GV_ques.DataBind();
         }
+
+        //20220620
+        protected void set_labelColor()
+        {
+            foreach (GridViewRow row in GV_ques.Rows)
+            {
+                Label lbl_id = (row.FindControl("lbl_name") as Label);
+                Label lbl_num = (row.FindControl("lbl_number") as Label);
+                if (lbl_num.Text != "0")
+                    lbl_id.ForeColor = System.Drawing.ColorTranslator.FromHtml("#00B12C");
+            }
+            updpnl.Update();
+        }
+
         protected void showData()
         {
             MySqlConnection con = new MySqlConnection(constr);
             con.Open();
-            string select_ques = "select id,name from m_ess;";
+            string select_ques = "select id,name,number from m_ess;";
             MySqlCommand cmd = new MySqlCommand(select_ques, con);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
             DataTable dt = new DataTable();
-            DataSet ds = new DataSet();
-            adapter.Fill(ds);
-            GV_ques.DataSource = ds;
+            //MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            //DataSet ds = new DataSet();
+            //adapter.Fill(ds);
+            MySqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                dt.Rows.Add(reader.GetValue(0).ToString());
+                dt.Rows.Add(reader.GetValue(1).ToString());
+                dt.Rows.Add(reader.GetValue(2).ToString());
+            }
+            GV_ques.DataSource = dt;
             GV_ques.DataBind();
             con.Close();
         }
@@ -62,6 +83,7 @@ namespace Kanrisya_Tab_Chousa
             DataTable dt_ques = new DataTable();
             dt_ques.Columns.Add("id");
             dt_ques.Columns.Add("name");
+            dt_ques.Columns.Add("number"); //20220620
             return dt_ques;
         }
         private DataTable GetGridViewData()
@@ -75,10 +97,12 @@ namespace Kanrisya_Tab_Chousa
                     Label lbl_id = (row.FindControl("lblcT") as Label);
                     //Label lbl_name = (row.FindControl("lbl_name") as Label);
                     TextBox lbl_name = (row.FindControl("txt_name") as TextBox);
+                    Label lbl_num = (row.FindControl("lbl_number") as Label); //20220620
 
                     DataRow dr = dt.NewRow();
                     dr[0] = lbl_id.Text;
                     dr[1] = lbl_name.Text;
+                    dr[2] = lbl_num.Text; //20220620
                     dt.Rows.Add(dr);
                 }
             }
@@ -109,6 +133,7 @@ namespace Kanrisya_Tab_Chousa
                 ViewState["Customers"] = dt_SyohinOriginal;
                 GV_ques.DataSource = dt_SyohinOriginal;
                 GV_ques.DataBind();
+                set_labelColor(); //20220620
                 updpnl.Update();
             }
             else
@@ -152,11 +177,12 @@ namespace Kanrisya_Tab_Chousa
 
         protected void OnRowDataBound(object sender, System.Web.UI.WebControls.GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(GV_ques, "Edit$" + e.Row.RowIndex);
-                e.Row.Attributes["style"] = "cursor:pointer";
-            }
+            //if (e.Row.RowType == DataControlRowType.DataRow)
+            //{
+            //    e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(GV_ques, "Edit$" + e.Row.RowIndex);
+            //    e.Row.Attributes["style"] = "cursor:pointer";
+            //}
+            
         }
 
         protected void lnkbtnShiireEdit_Click(object sender, EventArgs e)
@@ -165,5 +191,6 @@ namespace Kanrisya_Tab_Chousa
             (gvrow.FindControl("txt_name") as TextBox).CssClass = "displayTxt";
             (gvrow.FindControl("lbl_name") as TextBox).CssClass = "displayNone";
         }
+      
     }
 }

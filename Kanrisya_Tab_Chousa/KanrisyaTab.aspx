@@ -15,6 +15,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+  
     <style type="text/css">
         .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
             border-top: #FFFFFF;
@@ -71,8 +72,16 @@
 
         .displayNone {
             display: none;
+            
         }
-
+        .tbname {
+              width:809px;
+              border-radius:10px;
+            border: 0.5px solid #AAAAAA;
+             }
+        .colorTxt {
+             border-color: coral;
+              }
         .displayTxt {
             display: block;
         }
@@ -85,11 +94,19 @@
             box-sizing: border-box;
             /* ホワイト */
 
-            /*background: #FFFFFF;*/
+            /*background-color: red;*/
             border: 1px solid #F9F9F9;
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             border-radius: 15px;
         }
+       table.RowHover tr:hover td {
+    background-color: #e0f2f1 !important;
+}
+
+       .fontColor{
+           color:green;
+       }
+      
     </style>
     <script type="text/javascript">
         $(function () {
@@ -171,63 +188,11 @@
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
                                 <asp:UpdatePanel ID="updpnl" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
                     <ContentTemplate>
-
-                        <asp:GridView ID="GV_ques_original" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
-                                OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit" Visible="false">
-                               <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-                                <RowStyle Height="34px" Width="820px" BorderWidth="0.5px" />
-                                <HeaderStyle CssClass="displayNone" />
-                                <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
-                                <Columns>
-                                    <asp:TemplateField Visible="False">
-                                        <ItemTemplate>
-                                            <div id="div_code" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
-                                                 <asp:Label runat="server" ID="lblcT" Text='<%# Bind("id") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
-                                            </div>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
-                                                 
-                                                  <asp:Panel ID="Panel2" runat="server" >
-                                                      <div>
-                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
-                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname"></asp:TextBox>
-                                                      </div>
-                                                      </asp:Panel>
-                                                
-                                                <asp:Panel ID="PopupMenu1" runat="server" Style="display:none;">
-                                                    <div id="div_btn" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
-                                                         <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
-                                                  <i class="bi bi-three-dots"></i>
-                                                </asp:LinkButton>
-                                                     <asp:Panel ID="pnl_popup" runat="server" Style="display: none;">
-                                                  <asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;" OnClick="lnkbtnShiireEdit_Click"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>
-                                                </asp:Panel>
-                                                    </div>
-                                                </asp:Panel>
-                                                 <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
-                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0">
-                                            </asp:HoverMenuExtender>
-                                                
-                                                    <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="PopupMenu1" 
-                                                PopupControlID="pnl_popup" PopupPosition="bottom">
-                                            </asp:HoverMenuExtender>
-                                            </div>
-                                        </ItemTemplate>
-                                        <ItemStyle Width="820px"/>
-                                    </asp:TemplateField>
-                                    </Columns>
-                                </asp:GridView>
-
-                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
+                    <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridRow" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
                                 OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit">
                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-                                <RowStyle Height="34px" Width="820px" BorderWidth="0.5px" />
                                 <HeaderStyle CssClass="displayNone" />
-                                <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
+                                <RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px"  BorderWidth="0.5px"/>
                                 <Columns>
                                     <asp:TemplateField Visible="False">
                                         <ItemTemplate>
@@ -241,17 +206,17 @@
                                             <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
                                                  
                                                   <asp:Panel ID="Panel2" runat="server" >
-                                                      <div>
-                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
-                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname"></asp:TextBox>
+                                                         <div class="colorTxt">
+                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="16px" ForeColor="#6E6E6E"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname" OnClientClick="Validate();" Font-Size="16px"></asp:TextBox>
                                                       </div>
                                                       </asp:Panel>
                                                 
                                                 <asp:Panel ID="PopupMenu1" runat="server" Style="display:none;">
-                                                    <div id="div_btn" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
-                                                         <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
-                                                  <i class="bi bi-three-dots"></i>
-                                                </asp:LinkButton>
+                                                    <div id="div_btn" class="" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
+                                                         <%--<asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >--%>
+                                                  <i class="bi bi-three-dots btn-icons"></i>
+                                                <%--</asp:LinkButton>--%>
                                                      <asp:Panel ID="pnl_popup" runat="server" Style="display: none;">
                                                   <asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;" OnClick="lnkbtnShiireEdit_Click"></asp:LinkButton>
                                                     <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>
@@ -259,7 +224,7 @@
                                                     </div>
                                                 </asp:Panel>
                                                  <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
-                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0">
+                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0" HoverCssClass="RowHover">
                                             </asp:HoverMenuExtender>
                                                 
                                                     <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="PopupMenu1" 
@@ -269,6 +234,11 @@
                                         </ItemTemplate>
                                         <ItemStyle Width="820px"/>
                                     </asp:TemplateField>
+                                    <asp:TemplateField Visible="false"><%--20220620--%>
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lbl_number" Text='<%# Bind("number") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                         </ContentTemplate>
@@ -329,6 +299,16 @@
                 });
                 }
                                     </script>
+       
+<script type="text/javascript">
+    function Validate() {
+        var name = document.getElementById("txt_name").value;
+        if (name == "") {
+            $("#txt_name").css("border", "1px solid red");
+            $("#txt_name").focus();
+        }
+    }
+</script>
   </form>
 </body>
 </html>

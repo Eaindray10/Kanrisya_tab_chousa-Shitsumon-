@@ -85,15 +85,6 @@ namespace Kanrisya_Tab_Chousa {
         protected global::System.Web.UI.UpdatePanel updpnl;
         
         /// <summary>
-        /// GV_ques_original コントロール。
-        /// </summary>
-        /// <remarks>
-        /// 自動生成されたフィールド。
-        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GV_ques_original;
-        
-        /// <summary>
         /// GV_ques コントロール。
         /// </summary>
         /// <remarks>
