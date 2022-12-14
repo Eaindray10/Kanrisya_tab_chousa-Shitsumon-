@@ -65,7 +65,7 @@
         }
 
         .rbColor {
-            border-style: none;
+            border-style: none !important;
             border-color: transparent;
         }
 
