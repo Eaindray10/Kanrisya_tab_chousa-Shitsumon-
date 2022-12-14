@@ -11,7 +11,7 @@
     <script src="../Scripts/jquery.min.js"></script>
     <script src="../Scripts/popper.min.js"></script>
     <link href="../Styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../Styles/bootstrap-icons.css" rel="stylesheet" />
+      <link href="../Styles/bootstrap-icons.css" rel="stylesheet" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
@@ -65,7 +65,7 @@
         }
 
         .rbColor {
-            border-style: none;
+            border-style: none !important;
             border-color: transparent;
         }
 
@@ -76,6 +76,12 @@
         .displayTxt {
             display: block;
         }
+
+        .btn-icons {
+    color: black;
+    font-size: 13px;
+    margin-right: 5px;
+}
     </style>
     <script type="text/javascript">
         $(function () {
@@ -224,7 +230,7 @@
                                                 
                                                 <asp:Panel ID="PopupMenu1" runat="server" CssClass="modalPopup dropdown-menu fontcss " aria-labelledby="dropdownMenuButton" Style="display: none; min-width: 1rem; width: 6rem; margin-left: 5px;">
                                                      <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
-                                                  <i class="bi bi-trash-fill"></i>
+                                                   <i class="bi bi-pencil-fill"></i>
                                                 </asp:LinkButton>
                                                     <%--<asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;"></asp:LinkButton>
                                                     <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>--%>
