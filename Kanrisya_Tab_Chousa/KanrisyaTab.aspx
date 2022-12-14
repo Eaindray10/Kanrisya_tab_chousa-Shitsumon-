@@ -11,7 +11,7 @@
     <script src="../Scripts/jquery.min.js"></script>
     <script src="../Scripts/popper.min.js"></script>
     <link href="../Styles/bootstrap.min.css" rel="stylesheet" />
-    <link href="../Styles/bootstrap-icons.css" rel="stylesheet" />
+      <link href="../Styles/bootstrap-icons.css" rel="stylesheet" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
@@ -66,7 +66,7 @@
         }
 
         .rbColor {
-            border-style: none;
+            border-style: none !important;
             border-color: transparent;
         }
 
@@ -85,28 +85,6 @@
         .displayTxt {
             display: block;
         }
-        .btn-icons {
-    color: black;
-    font-size: 13px;
-    margin-left:5.5px;
-}
-        #PopupMenu1{
-            box-sizing: border-box;
-            /* ホワイト */
-
-            /*background-color: red;*/
-            border: 1px solid #F9F9F9;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 15px;
-        }
-       table.RowHover tr:hover td {
-    background-color: #e0f2f1 !important;
-}
-
-       .fontColor{
-           color:green;
-       }
-      
     </style>
     <script type="text/javascript">
         $(function () {
@@ -211,18 +189,6 @@
                                                 <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname" OnClientClick="Validate();" Font-Size="16px"></asp:TextBox>
                                                       </div>
                                                       </asp:Panel>
-                                                
-                                                <asp:Panel ID="PopupMenu1" runat="server" Style="display:none;">
-                                                    <div id="div_btn" class="" style="width:24px;height:24px; border-radius:15px; background-color:#F9F9F9;">
-                                                         <%--<asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >--%>
-                                                  <i class="bi bi-three-dots btn-icons"></i>
-                                                <%--</asp:LinkButton>--%>
-                                                     <asp:Panel ID="pnl_popup" runat="server" Style="display: none;">
-                                                  <asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;" OnClick="lnkbtnShiireEdit_Click"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>
-                                                </asp:Panel>
-                                                    </div>
-                                                </asp:Panel>
                                                  <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
                                                 PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0" HoverCssClass="RowHover">
                                             </asp:HoverMenuExtender>
