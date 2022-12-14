@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KanrisyaTab.aspx.cs" Inherits="Kanrisya_Tab_Chousa.KanrisyaTab" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="KanrisyaTab.aspx.cs" Inherits="Kanrisya_Tab_Chousa.KanrisyaTab"  EnableViewState="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <!DOCTYPE html>
@@ -15,6 +15,7 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/themes/smoothness/jquery-ui.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
+  
     <style type="text/css">
         .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
             border-top: #FFFFFF;
@@ -71,58 +72,22 @@
 
         .displayNone {
             display: none;
+            
         }
-
+        .tbname {
+              width:809px;
+              border-radius:10px;
+            border: 0.5px solid #AAAAAA;
+             }
+        .colorTxt {
+             border-color: coral;
+              }
         .displayTxt {
             display: block;
         }
-
-        .btn-icons {
-    color: black;
-    font-size: 13px;
-    margin-right: 5px;
-}
     </style>
     <script type="text/javascript">
         $(function () {
-
-            //window.onload = function () {
-
-            //    // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
-            //    if (sessionStorage.getItem('name') == "name") {
-            //        return;
-            //    }
-
-            //    // If values are not blank, restore them to the fields
-            //    var id = sessionStorage.getItem('id');
-               
-            //    //if (name !== null) $('#inputName').val(name);
-
-            //    var name = sessionStorage.getItem('name');
-            //    //if (email !== null) $('#inputEmail').val(email);
-            //    //alert(id + "\n" + name);
-            //}
-
-            // Before refreshing the page, save the form data to sessionStorage
-            window.onbeforeunload = function () {
-                <%--$("#<%=GV_ques.ClientID%> tr").each(function () {
-                    var row = $(this).closest("tr");
-                    //Determine the Row Index.
-                    var index = (row[0].rowIndex - 1);
-                    sessionStorage.setItem("id", $("#GV_ques_lblcT_" + index).val());
-                    sessionStorage.setItem("name", $("#GV_ques_lbl_name_" + index).val());
-                });--%>
-
-            }
-
-            //var arr_index = [];
-            //var arr_name = [];
-
-            //function setData(index, name) {
-            //    arr_index.push(index);
-            //    arr_name.push(name);
-            //    sessionStorage("arr_index", arr_index);
-            //}
 
             $("[id*=GV_ques]").sortable({
                 items: 'tr:not(tr:first-child)',
@@ -134,9 +99,9 @@
                     ui.item.addClass("rbColor");
                     $(ui.item).find(".row_item").addClass("selectedRow");
                     document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
-            var ind = (ui.item.index() - 1);
-            var name = $("[id*=GV_ques] tr").find("#GV_ques_lbl_name_" + ind).html();
-            sessionStorage.setItem("r_name", name);
+                    //var ind = (ui.item.index() - 1);
+                    //var name = $("[id*=GV_ques] tr").find("#GV_ques_lbl_name_" + ind).html();
+                    //sessionStorage.setItem("r_name", name);
         },
         stop: function (e, ui) {
             ui.item.removeClass("selected");
@@ -157,8 +122,6 @@
                 var row = $(this).closest("tr");
                 //Determine the Row Index.
                 var index = (row[0].rowIndex - 1);
-
-                //alert(index + " " + $("#GV_ques_txt_name_" + index).val() + "\n" + $("#GV_ques_lbl_name_" + index).val());
                 if ($("#GV_ques_txt_name_" + index).hasClass("displayNone")) {
                     $("#GV_ques_txt_name_" + index).removeClass("displayNone");
                     $("#GV_ques_txt_name_" + index).addClass("displayTxt");
@@ -174,7 +137,6 @@
                     $("#GV_ques_lbl_name_" + index).removeClass("displayNone");
                     $("#GV_ques_lbl_name_" + index).addClass("displayTxt");
                     $("#GV_ques_lbl_name_" + index).html(text);
-                    //setData(index, text);
                 });
             });
         });
@@ -183,6 +145,7 @@
 <body>
     <form id="form1" runat="server">
         <asp:ScriptManager runat="server"></asp:ScriptManager>
+       
     <div class="container">
         <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-left:72px;margin-top:97px;">
             <li class="nav-item">
@@ -203,12 +166,11 @@
                                 <div style="background-color: white; width: 821px; overflow-y: auto; overflow-x: auto;" display: inline-block !important;">
                                 <asp:UpdatePanel ID="updpnl" runat="server" ChildrenAsTriggers="true" UpdateMode="Conditional">
                     <ContentTemplate>
-                            <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridViewStyle" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
+                    <asp:GridView ID="GV_ques" runat="server" BorderColor="#AAAAAA"   Width="820px" AutoGenerateColumns="False"  HtmlEncode="false" CellPadding="4" AllowSorting="True" CssClass="RowHover GridRow" BackColor="White" BorderStyle="None" BorderWidth="0.5px" ForeColor="Black" GridLines="Horizontal"
                                 OnRowEditing="GV_ques_RowEditing" OnRowUpdating="GV_ques_RowUpdating" OnRowCancelingEdit="GV_ques_RowCancelingEdit">
                                <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
-                                <RowStyle Height="34px" Width="820px" BorderWidth="0.5px" />
                                 <HeaderStyle CssClass="displayNone" />
-                                <%--<RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px" />--%>
+                                <RowStyle BorderColor="#AAAAAA" Height="34px" Width="820px"  BorderWidth="0.5px"/>
                                 <Columns>
                                     <asp:TemplateField Visible="False">
                                         <ItemTemplate>
@@ -222,26 +184,27 @@
                                             <div class="row_item" style="text-align: left; padding-right: 4px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; word-break: break-all;">
                                                  
                                                   <asp:Panel ID="Panel2" runat="server" >
-                                                      <div>
-                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="13px"  CommandArgument='<%# Container.DataItemIndex %>'  />
-                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname"></asp:TextBox>
+                                                         <div class="colorTxt">
+                                                          <asp:Label runat="server" ID="lbl_name" CssClass="displayTxt" Text='<%# Bind("name") %>' Font-Underline="false" Font-Size="16px" ForeColor="#6E6E6E"  CommandArgument='<%# Container.DataItemIndex %>'  />
+                                                <asp:TextBox ID="txt_name" runat="server" Text='<%# Bind("name") %>' CssClass="displayNone tbname" OnClientClick="Validate();" Font-Size="16px"></asp:TextBox>
                                                       </div>
                                                       </asp:Panel>
+                                                 <asp:HoverMenuExtender ID="hmeOptions" runat="server" TargetControlID="Panel2" 
+                                                PopupControlID="PopupMenu1" PopupPosition="Right" OffsetX="0" OffsetY="0" HoverCssClass="RowHover">
+                                            </asp:HoverMenuExtender>
                                                 
-                                                <asp:Panel ID="PopupMenu1" runat="server" CssClass="modalPopup dropdown-menu fontcss " aria-labelledby="dropdownMenuButton" Style="display: none; min-width: 1rem; width: 6rem; margin-left: 5px;">
-                                                     <asp:LinkButton ID="imgbtnCopy" runat="server" CssClass="btn-icons" CommandName="Edit" CommandArgument="<%# Container.DataItemIndex %>" >
-                                                   <i class="bi bi-pencil-fill"></i>
-                                                </asp:LinkButton>
-                                                    <%--<asp:LinkButton ID="lnkbtnShiireEdit" class="dropdown-item" runat="server" Text='編集' Style="margin-right: 10px; font-size:13px;"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkbtnShiireDelete_Click" class="dropdown-item" runat="server" Text='削除' Style="margin-right: 10px;font-size:13px;"></asp:LinkButton>--%>
-                                                </asp:Panel>
-                                                <asp:HoverMenuExtender ID="hmeBumonListEdit" runat="server" TargetControlID="Panel2" 
-                                                PopupControlID="PopupMenu1" PopupPosition="Right">
+                                                    <asp:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="PopupMenu1" 
+                                                PopupControlID="pnl_popup" PopupPosition="bottom">
                                             </asp:HoverMenuExtender>
                                             </div>
                                         </ItemTemplate>
                                         <ItemStyle Width="820px"/>
                                     </asp:TemplateField>
+                                    <asp:TemplateField Visible="false"><%--20220620--%>
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" ID="lbl_number" Text='<%# Bind("number") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
                         </ContentTemplate>
@@ -254,6 +217,64 @@
            </div>
         </div>
     </div>
+     <script type="text/javascript">
+                      var prm = Sys.WebForms.PageRequestManager.getInstance();
+            if (prm != null) {
+                prm.add_endRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null)
+                    {
+                        $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).focusout(function () {
+                    var text = $(this).val();
+                   
+                    $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).removeClass("displayTxt");
+                    $("#GV_ques_txt_name_" + document.getElementById("HF_Edit").value).addClass("displayNone");
+                    $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).removeClass("displayNone");
+                    $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).addClass("displayTxt");
+                 $("#GV_ques_lbl_name_" + document.getElementById("HF_Edit").value).html(text);
+                 //__doPostBack();
+
+                        });
+
+                        $("[id*=GV_ques]").sortable({
+                items: 'tr:not(tr:first-child)',
+                cursor: 'pointer',
+                axis: 'y',
+                dropOnEmpty: false,
+                start: function (e, ui) {
+                    ui.item.addClass("selected");
+                    ui.item.addClass("rbColor");
+                    $(ui.item).find(".row_item").addClass("selectedRow");
+                    document.getElementById("<%=HF_beforeSortIndex.ClientID%>").value = ui.item.index();
+                  
+        },
+        stop: function (e, ui) {
+            ui.item.removeClass("selected");
+            ui.item.removeClass("rbColor");
+            $(ui.item).find(".row_item").removeClass("selectedRow");
+            document.getElementById("<%=HF_afterSortIndex.ClientID%>").value = ui.item.index();
+            sessionStorage.setItem("r_index", (ui.item.index() - 1));
+           
+            document.getElementById("<%=BT_Sort.ClientID%>").click();
+                },
+                receive: function (e, ui) {
+                    $(this).find("tbody").append(ui.item);
+                }
+            });
+
+                                        };
+                });
+                }
+                                    </script>
+       
+<script type="text/javascript">
+    function Validate() {
+        var name = document.getElementById("txt_name").value;
+        if (name == "") {
+            $("#txt_name").css("border", "1px solid red");
+            $("#txt_name").focus();
+        }
+    }
+</script>
   </form>
 </body>
 </html>
